@@ -1,0 +1,61 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Mean Application API",
+        "description": "Mean Application API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:1337",
+    "basePath": "/api/v1",
+    "tags": [
+        {
+            "name": "Photos",
+            "description": "API for photos in the system"
+        }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "securityDefinitions": {
+        "AuthHeader": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization"
+        }
+    },
+    "paths": {
+        "/admin/photos": {
+            "post": {
+                "tags": ["Photos"],
+                "description": "Retrieve photo from the api",
+                "parameters": [
+                    {
+                        "name": "image",
+                        "in": "body",
+                        "description": "image",
+                        "schema": {
+                            "type": "file",
+                            "required": ["image"],
+                            "properties": {
+                                "image": {
+                                    "type": "file"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "image posted"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

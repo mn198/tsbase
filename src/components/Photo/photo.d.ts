@@ -1,15 +1,6 @@
-interface IImage {
-    filename: string,
-    originalname: string,
-    encoding: string,
-    mimetype: string,
-    destination: string,
-    fieldname: string,
-    path: string,
-    size: number
-}
+import { IImageStat } from './photo.model';
 
 export interface IPhoto {
-    uploadPhoto(imageStat: any): Observable<Image>;
+    uploadPhoto(imageStat: IImageStat): Observable<IImageStat>;
     getPhotoByFilename(filename: string): Observable<string>;
 }

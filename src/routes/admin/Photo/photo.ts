@@ -3,8 +3,8 @@ import { PhotoController } from '../../../components/Photo/photo.controller';
 import fs from 'fs';
 
 const uploadPhoto = (request: Request, response: Response) => {
-    console.log(request.file)
-    PhotoController.uploadPhoto(request.file)
+    var stat: any = request.file; 
+    PhotoController.uploadPhoto(stat)
     .subscribe({
         next: (imageStat: any) => {
             response.json(imageStat);
@@ -16,7 +16,8 @@ const uploadPhoto = (request: Request, response: Response) => {
 }
 
 const middlewareStorePhoto = (request: Request, response: Response, next: NextFunction) => {
-    PhotoController.uploadPhoto(request.file)
+    var stat: any = request.file; 
+    PhotoController.uploadPhoto(stat)
     .subscribe({
         next: (_: any) => {
             next();
@@ -40,8 +41,10 @@ const readPhoto = (request: Request, response: Response) => {
 
 }
 
+
+
 export {
     uploadPhoto,
     middlewareStorePhoto,
-    readPhoto
+    readPhoto,
 }

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
 
 interface IAuth {
-  identityClient(ipAddress: string): Observable<any>;
+  login(username: string, password: string): Observable<any>;
 }

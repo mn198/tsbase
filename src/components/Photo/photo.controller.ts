@@ -1,20 +1,23 @@
 import { Observable } from "rxjs";
 import logging from "../../config/logging";
-import { PhotoModel } from "./photo.model";
-import { IPhoto, IImage } from './photo.d';
+import { IImageStat, PhotoModel } from "./photo.model";
+import { IPhoto } from './photo.d';
 
 const namespace = "Photo Controller";
 
 class Photo implements IPhoto {
-    uploadPhoto(imageStat: any): Observable<IImage>{
+    uploadPhoto(imageStat: IImageStat): Observable<IImageStat>{
         return new Observable((observer: any) => {
             if(imageStat){
                 PhotoModel.create(imageStat)
-                .then((_: any) => {
-                    observer.next(imageStat);
+                .then((stat: any) => {
+                    observer.next(stat);
+                })
+                .catch((err) => {
+                    observer.error(err);
                 })
             } else {
-                observer.next(null);
+                observer.error({error: 'not a png/jpeg file'});
             }
         })
     }

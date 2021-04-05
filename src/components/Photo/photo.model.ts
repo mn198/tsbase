@@ -1,7 +1,15 @@
-import mongoose from 'mongoose';
+import { model, Schema, Model, Document } from 'mongoose';
 
-const Schema = mongoose.Schema;
-
+export interface IImageStat extends Document {
+    filename: string,
+    originalname: string,
+    encoding: string,
+    mimetype: string,
+    destination: string,
+    fieldname: string,
+    path: string,
+    size: number
+}
 const Photo = new Schema({
     filename: String,
     originalname: String,
@@ -13,4 +21,4 @@ const Photo = new Schema({
     size: Number
 }, { timestamps: true, versionKey: false })
 
-export const PhotoModel = mongoose.model('Photos', Photo);
+export const PhotoModel: Model<IImageStat> = model('Photos', Photo); 

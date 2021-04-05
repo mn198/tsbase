@@ -2,6 +2,7 @@ import app from './config/express';
 import http from 'http';
 import config from './config/config';
 import logging from './config/logging';
+require('./config/mongoose');
 
 const namespace = 'Server';
 

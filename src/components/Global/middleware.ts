@@ -1,1 +1,0 @@
-export { middlewareStorePhoto } from '../../routes/admin/Photo/photo';

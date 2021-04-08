@@ -14,8 +14,14 @@ const SERVER = {
     api_version: API_VERSION
 };
 
+const JWT = {
+    secret: 'a string that represents secret',
+    exp: 2 // hours
+}
+
 const config = {
-    server: SERVER
+    server: SERVER,
+    jwt: JWT
 };
 
 export default config;

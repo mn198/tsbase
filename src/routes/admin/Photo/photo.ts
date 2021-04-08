@@ -15,18 +15,6 @@ const uploadPhoto = (request: Request, response: Response) => {
     })
 }
 
-const middlewareStorePhoto = (request: Request, response: Response, next: NextFunction) => {
-    var stat: any = request.file; 
-    PhotoController.uploadPhoto(stat)
-    .subscribe({
-        next: (_: any) => {
-            next();
-        },
-        error: (_: any) => {
-            next()
-        }
-    })
-}
 
 const readPhoto = (request: Request, response: Response) => {
     try {
@@ -45,6 +33,5 @@ const readPhoto = (request: Request, response: Response) => {
 
 export {
     uploadPhoto,
-    middlewareStorePhoto,
     readPhoto,
 }

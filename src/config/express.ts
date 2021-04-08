@@ -1,10 +1,10 @@
 import http from 'http';
 import express, { Request, Response, NextFunction } from 'express';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
+// import bodyParser from 'body-parser';
+// import mongoose from 'mongoose';
 import morgan from 'morgan';
 import config from './config';
-import logging from './config';
+// import logging from './config';
 import { ClientRoute } from '../routes/client';
 import { AdminRoute } from '../routes/admin';
 const swaggerUi = require('swagger-ui-express');

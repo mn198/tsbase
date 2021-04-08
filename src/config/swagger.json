@@ -13,8 +13,7 @@
     "basePath": "/api/v1",
     "tags": [
         {
-            "name": "Photos",
-            "description": "API for photos in the system"
+            "name": "Photos"
         }
     ],
     "schemes": ["http"],
@@ -31,27 +30,38 @@
         "/admin/photos": {
             "post": {
                 "tags": ["Photos"],
-                "description": "Retrieve photo from the api",
                 "parameters": [
                     {
                         "name": "image",
-                        "in": "body",
+                        "in": "formData",
                         "description": "image",
-                        "schema": {
-                            "type": "file",
-                            "required": ["image"],
-                            "properties": {
-                                "image": {
-                                    "type": "file"
-                                }
-                            }
-                        }
+                        "type": "file",
+                        "require": true
+                    }
+                ],
+                "consumes": ["multipart/form-data"],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/admin/photos/{id}": {
+            "get": {
+                "tags": ["Photos"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
                     }
                 ],
                 "produces": ["application/json"],
                 "responses": {
                     "200": {
-                        "description": "image posted"
+                        "description": ""
                     }
                 }
             }

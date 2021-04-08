@@ -1,11 +1,11 @@
 import { Observable } from "rxjs";
 import logging from "../../config/logging";
 import { IImageStat, PhotoModel } from "./photo.model";
-import { IPhoto } from './photo.d';
+import { IPhotoController } from './photo.d';
 
 const namespace = "Photo Controller";
 
-class Photo implements IPhoto {
+class Photo implements IPhotoController {
     uploadPhoto(imageStat: IImageStat): Observable<IImageStat>{
         return new Observable((observer: any) => {
             if(imageStat){

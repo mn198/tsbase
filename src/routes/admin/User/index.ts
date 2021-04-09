@@ -9,4 +9,10 @@ router.post('/users', [
     UserController.create
 ])
 
+router.get('/users/pageIndex/:pageIndex/pageSize/:pageSize', [
+    Middleware.validateJsonWebToken,
+    Middleware.validatePageIndexAndPageSize,
+    UserController.getAll
+])
+
 export { router as UserRoute };

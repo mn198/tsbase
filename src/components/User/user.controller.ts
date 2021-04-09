@@ -18,6 +18,58 @@ class User implements IUserController {
                 });
         });
     }
+
+    getAllUsers(pageIndex: number, pageSize: number): Observable<any> {
+        return new Observable((observer: any) => {
+            UserModel.aggregate([
+                {
+                    $sort: {
+                        createdAt: -1
+                    }
+                }, {
+                    $facet: {
+                        data: [
+                            {
+                                $skip: (pageIndex - 1) * pageSize
+                            },
+                            {
+                                $limit: pageSize
+                            }
+                        ],
+                        count: [
+                            {
+                                $count: 'totalRecord'
+                            }
+                        ]
+                    }
+                }, {
+                    $unwind: {
+                        path: '$count'
+                    }
+                }, {
+                    $project: {
+                        data: 1,
+                        total: '$count.totalRecord',
+                    }
+                }
+            ])
+            .then((result: any) => {
+                if(result.length){
+                    result[0].pageIndex = pageIndex;
+                    result[0].pageSize = pageSize;
+                    observer.next(result[0]);
+                } else {
+                    var payload = {
+                        data: [],
+                        totalRecord: 0,
+                        pageIndex,
+                        pageSize
+                    }
+                    observer.next(payload);
+                }
+            })
+        })
+    }
 }
 
 export const UserController = new User();

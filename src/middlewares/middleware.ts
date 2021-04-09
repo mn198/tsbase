@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import validator from 'validator';
+import { Utils } from '../components/Utils/utils';
 
 class MiddlewareClass implements IMiddleware {
     isPasswordAndUserMatch(request: Request, response: Response, next: NextFunction) {
@@ -33,47 +34,56 @@ class MiddlewareClass implements IMiddleware {
         });
     }
 
-    validateJsonWebToken(request: Request | any, response: Response, next: NextFunction){
-        if(request.headers['authorization']){
+    validateJsonWebToken(request: Request | any, response: Response, next: NextFunction) {
+        if (request.headers['authorization']) {
             try {
                 let authorization = request.headers['authorization'].split(' ');
-                if(authorization[0] !== 'Bearer'){
-                    return response.status(401).json({error: messageConstants.UNAUTHORIZED})
+                if (authorization[0] !== 'Bearer') {
+                    return response.status(401).json({ error: messageConstants.UNAUTHORIZED });
                 } else {
                     request.jwt = jwt.verify(authorization[1], config.jwt.secret);
                     return next();
                 }
-            } catch(err){
-                return response.status(403).json({error: messageConstants.FORBIDDEN})
+            } catch (err) {
+                return response.status(403).json({ error: messageConstants.FORBIDDEN });
             }
         } else {
-            return response.status(401).json({error: messageConstants.UNAUTHORIZED})
+            return response.status(401).json({ error: messageConstants.UNAUTHORIZED });
         }
     }
 
-    validateUserPayload(request: Request , response: Response, next: NextFunction){
+    validateUserPayload(request: Request, response: Response, next: NextFunction) {
         var user: IUser = request.body;
         var valid = 1;
 
-        if(!validator.isLength(user.username, { min: 6, max: 32})){
+        if (!validator.isLength(user.username, { min: 6, max: 32 })) {
             valid = 0;
-            response.status(400).json({error: messageConstants.INVALID_USERNAME_LENGTH});
-        }
-        
-        if(!validator.isLength(user.password, { min: 6, max: 32})){
-            valid = 0;
-            response.status(400).json({error: messageConstants.INVALID_PASSWORD_LENGTH});
-        }
-        
-        if(!validator.isEmail(user.email)){
-            valid = 0;
-            response.status(400).json({error: messageConstants.INVALID_EMAIL});
-            
+            response.status(400).json({ error: messageConstants.INVALID_USERNAME_LENGTH });
         }
 
-        if(valid){
+        if (!validator.isLength(user.password, { min: 6, max: 32 })) {
+            valid = 0;
+            response.status(400).json({ error: messageConstants.INVALID_PASSWORD_LENGTH });
+        }
+
+        if (!validator.isEmail(user.email)) {
+            valid = 0;
+            response.status(400).json({ error: messageConstants.INVALID_EMAIL });
+        }
+
+        if (valid) {
             next();
         }
+    }
+
+    validatePageIndexAndPageSize(request: Request, response: Response, next: NextFunction) {
+        var pageIndex = Utils.mustBePositiveInteger(request.params.pageIndex, 1);
+        var pageSize = Utils.mustBePositiveInteger(request.params.pageSize, 30);
+        console.log(pageIndex)
+        console.log(pageSize)
+        request.params.pageIndex = pageIndex;
+        request.params.pageSize = pageSize;
+        next();
     }
 }
 

@@ -20,7 +20,7 @@ class Auth implements IAuthController {
             var b =  Buffer.from(hash);
             var refresh_token = b.toString('base64');
 
-            response.status(201).send({ accessToken: token, refresh_token: refresh_token });
+            response.status(201).send({ access_token: token, refresh_token: refresh_token });
         } catch (err) {
             response.status(400).json({ error: messageConstants.INVALID_USERNAME_OR_PASSWORD });
         }

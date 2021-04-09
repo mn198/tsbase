@@ -30,7 +30,7 @@ class UtilsClass implements IUtils {
         if (!isNaN(origin) && +origin > 0) {
             return origin;
         }
-        if (defaultNumber != null) {
+        if (defaultNumber > 0) {
             return defaultNumber;
         }
         return 1;

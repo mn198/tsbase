@@ -13,6 +13,19 @@ const create = (request: Request, response: Response) => {
     })
 }
 
+const getAll = (request: Request, response: Response) => {
+    UserController.getAllUsers(+request.params.pageIndex, +request.params.pageSize)
+    .subscribe({
+        next: (users: any) => {
+            response.json(users);
+        },
+        error: (err: any) => {
+            response.json(err);
+        }
+    })
+}
+
 export {
-    create
+    create,
+    getAll
 }

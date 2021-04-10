@@ -15,4 +15,9 @@ router.get('/users/pageIndex/:pageIndex/pageSize/:pageSize', [
     UserController.getAll
 ])
 
+router.get('/users/:id', [
+    Middleware.validateJsonWebToken,
+    UserController.getOne
+])
+
 export { router as UserRoute };

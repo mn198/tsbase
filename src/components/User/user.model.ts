@@ -12,10 +12,10 @@ export interface IUser extends Document {
 const User = new Schema({
     nickname: String,
     email: { type: String, unique: true },
-    username: { type: String, unique: true },
-    password: { type: String },
-    avatar: String,
-    description: String
+    username: { type: String, unique: true, minlength: 6, maxlength: 32 },
+    password: { type: String},
+    avatar: { type: String, default: ''},
+    description: { type: String, default: ''}
 }, { timestamps: true, versionKey: false })
 
 export const UserModel: Model<IUser> = model('Users', User);

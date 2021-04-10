@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IUserController } from './user';
+import { IUserController, IUserList } from './user';
 import { IUser, UserModel } from './user.model';
 import crypto from 'crypto';
 
@@ -19,7 +19,7 @@ class User implements IUserController {
         });
     }
 
-    getAllUsers(pageIndex: number, pageSize: number): Observable<any> {
+    getAllUsers(pageIndex: number, pageSize: number): Observable<IUserList> {
         return new Observable((observer: any) => {
             UserModel.aggregate([
                 {
@@ -67,6 +67,18 @@ class User implements IUserController {
                     }
                     observer.next(payload);
                 }
+            })
+        })
+    }
+
+    getOneUser(userId: string): Observable<IUser> {
+        return new Observable((observer: any) => {
+            UserModel.findById(userId)
+            .then((wantedUser: IUser | null) => {
+                observer.next(wantedUser);
+            })
+            .catch((error: any) => {
+                observer.error(error);
             })
         })
     }

@@ -39,4 +39,28 @@ const getAll = (request: Request, response: Response) => {
     });
 };
 
-export { create, getAll, getOne };
+const checkEmail = (request: Request, response: Response) => {
+    UserController.countEmail(request.body.email)
+    .subscribe({
+        next: (count: any) => {
+            response.json({count});
+        },
+        error: (error: any) => {
+            response.status(StatusCodes.BAD_REQUEST).json({ error, code: StatusCodes.BAD_REQUEST });
+        }
+    })
+}
+
+const checkUsername = (request: Request, response: Response) => {
+    UserController.countUsername(request.body.username)
+    .subscribe({
+        next: (count: any) => {
+            response.json({count});
+        },
+        error: (error: any) => {
+            response.status(StatusCodes.BAD_REQUEST).json({ error, code: StatusCodes.BAD_REQUEST });
+        }
+    })
+}
+
+export { create, getAll, getOne, checkEmail, checkUsername };

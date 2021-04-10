@@ -8,6 +8,8 @@ import jwt from 'jsonwebtoken';
 import validator from 'validator';
 import { Utils } from '../components/Utils/utils';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { UserController } from '../components/User/user.controller';
+import { zip } from 'rxjs';
 
 class MiddlewareClass implements IMiddleware {
     isPasswordAndUserMatch(request: Request, response: Response, next: NextFunction) {
@@ -54,30 +56,48 @@ class MiddlewareClass implements IMiddleware {
     }
 
     validateUserPayload(request: Request, response: Response, next: NextFunction) {
+        
         var user: IUser = request.body;
         var valid = 1;
-        var errors = [];
-
-        if (!validator.isLength(user.username, { min: 6, max: 32 })) {
-            valid = 0;
-            errors.push(messageConstants.INVALID_USERNAME_LENGTH);
-        }
+        var errors: any = [];
         
-        if (!validator.isLength(user.password, { min: 6, max: 32 })) {
-            valid = 0;
-            errors.push(messageConstants.INVALID_PASSWORD_LENGTH);
-        }
-
-        if (!validator.isEmail(user.email)) {
-            valid = 0;
-            errors.push(messageConstants.INVALID_EMAIL);
-        }
+        var countEmail = UserController.countEmail(user.email);
+        var countUsername = UserController.countUsername(user.username);
         
-        if (valid) {
-            next();
-        } else {
-            response.status(StatusCodes.BAD_REQUEST).json({ errors, code: StatusCodes.BAD_REQUEST });
-        }
+        zip(countEmail, countUsername)
+        .subscribe({
+            next: (results: any) => {
+                if(results[0] > 0){
+                    errors.push(messageConstants.DUPLICATED_EMAIL);
+                    valid = 0;
+                }
+                if(results[1] > 0){
+                    errors.push(messageConstants.DUPLICATED_USERNAME);
+                    valid = 0;
+                }
+
+                if (!validator.isLength(user.username, { min: 6, max: 32 })) {
+                    valid = 0;
+                    errors.push(messageConstants.INVALID_USERNAME_LENGTH);
+                }
+                
+                if (!validator.isLength(user.password, { min: 6, max: 32 })) {
+                    valid = 0;
+                    errors.push(messageConstants.INVALID_PASSWORD_LENGTH);
+                }
+        
+                if (!validator.isEmail(user.email)) {
+                    valid = 0;
+                    errors.push(messageConstants.INVALID_EMAIL);
+                }
+                
+                if (valid) {
+                    next();
+                } else {
+                    response.status(StatusCodes.BAD_REQUEST).json({ errors, code: StatusCodes.BAD_REQUEST });
+                }
+            }
+        })
     }
 
     validatePageIndexAndPageSize(request: Request, response: Response, next: NextFunction) {

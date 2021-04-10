@@ -20,4 +20,12 @@ router.get('/users/:id', [
     UserController.getOne
 ])
 
+router.post('/users/check_username', [
+    UserController.checkUsername
+])
+
+router.post('/users/check_email', [
+    UserController.checkEmail
+])
+
 export { router as UserRoute };

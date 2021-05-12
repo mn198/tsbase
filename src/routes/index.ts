@@ -6,7 +6,7 @@ import { UserRoute } from './User';
 const router = express.Router();
 
 router.use(PhotoRoute);
-router.use(AuthRoute);
-router.use(UserRoute);
+router.use('/auth', AuthRoute);
+router.use('/users', UserRoute);
 
-export { router as AdminRoute };
+export { router as RoutesConfig };

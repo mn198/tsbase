@@ -3,8 +3,8 @@ import { IUser } from "./user.model";
 
 export interface IUserController {
     create(userData: IUser): Observable<any>;
-    getOneUser(userId: string): Observable<IUser>;
-    getAllUsers(pageIndex: number, pageSize: number): Observable<IUserList>;
+    get(userId: string): Observable<IUser>;
+    getAll(pageIndex: number, pageSize: number): Observable<IUserList>;
     countEmail(email: string): Observable<Number>;
     countUsername(username: string): Observable<Number>;
 }

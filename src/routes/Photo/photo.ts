@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PhotoController } from '../../../components/Photo/photo.controller';
+import { PhotoController } from '../../components/Photo/photo.controller';
 import fs from 'fs';
 
 const uploadPhoto = (request: Request, response: Response) => {

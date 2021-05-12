@@ -1,21 +1,48 @@
 import { model, Schema, Model, Document } from 'mongoose';
 
 export interface IUser extends Document {
-    nickname: string,
-    email: string,
-    username: string,
-    password: string,
-    avatar: string,
-    description: string
+    displayName: string;
+    name: {
+        familyName: string;
+        givenName: string;
+    };
+    email: string;
+    username: string;
+    password: string;
+    picture: string;
+    description: string;
+    googleId: string;
+    photos: { value: string }[];
 }
 
-const User = new Schema({
-    nickname: String,
-    email: { type: String, unique: true },
-    username: { type: String, unique: true, minlength: 6, maxlength: 32 },
-    password: { type: String},
-    avatar: { type: String, default: ''},
-    description: { type: String, default: ''}
-}, { timestamps: true, versionKey: false })
+const User = new Schema(
+    {
+        displayName: { type: String, default: ''},
+        name: {
+            familyName: String,
+            givenName: String
+        },
+        email: { type: String, unique: true },
+        username: { type: String, minlength: 6, maxlength: 32 },
+        password: { type: String },
+        picture: { type: String, default: '' },
+        description: { type: String, default: '' },
+        googleId: String,
+        facebookId: String,
+        photos: [
+            {
+                value: { type: String }
+            }
+        ]
+    },
+    { timestamps: true, versionKey: false }
+);
+
+User.set('toJSON', {
+    virtuals: true,
+    transform: (doc: any, converted: any) => {
+        delete converted._id;
+    }
+});
 
 export const UserModel: Model<IUser> = model('Users', User);

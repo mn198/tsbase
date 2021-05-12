@@ -19,7 +19,7 @@ class User implements IUserController {
         });
     }
 
-    getAllUsers(pageIndex: number, pageSize: number): Observable<IUserList> {
+    getAll(pageIndex: number, pageSize: number): Observable<IUserList> {
         return new Observable((observer: any) => {
             UserModel.aggregate([
                 {
@@ -71,7 +71,7 @@ class User implements IUserController {
         })
     }
 
-    getOneUser(userId: string): Observable<IUser> {
+    get(userId: string): Observable<IUser> {
         return new Observable((observer: any) => {
             UserModel.findById(userId)
             .then((wantedUser: IUser | null) => {

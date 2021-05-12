@@ -1,5 +1,5 @@
 import express from 'express';
-import { Utils } from '../../../components/Utils/utils';
+import { Utils } from '../../components/Utils/utils';
 import * as PhotoController from './photo';
 
 const router = express.Router();

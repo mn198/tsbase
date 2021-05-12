@@ -1,16 +1,17 @@
-import http from 'http';
 import express, { Request, Response, NextFunction } from 'express';
-// import bodyParser from 'body-parser';
-// import mongoose from 'mongoose';
 import morgan from 'morgan';
+import passport from 'passport';
 import config from './config';
-// import logging from './config';
-import { ClientRoute } from '../routes/client';
-import { AdminRoute } from '../routes/admin';
+import { RoutesConfig } from '../routes';
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+require('./passport');
 
 const app = express();
+
+/** authenticate */
+app.use(passport.initialize());
+app.use(passport.session());
 
 /** logging */
 app.use(morgan('dev'));
@@ -39,8 +40,7 @@ app.use((req, res, next) => {
 });
 
 /** Routes */
-app.use(config.server.api_version, ClientRoute);
-app.use(config.server.api_version, AdminRoute);
+app.use(config.server.api_version, RoutesConfig);
 
 /** swagger ui */
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

@@ -1,30 +1,30 @@
 import express from 'express';
-import { Middleware } from '../../../middlewares/middleware';
+import { Middleware } from '../../middlewares/middleware';
 import * as UserController from './user';
 
 const router = express.Router();
 
-router.post('/users', [
+router.post('', [
     Middleware.validateUserPayload,
     UserController.create
 ])
 
-router.get('/users/pageIndex/:pageIndex/pageSize/:pageSize', [
+router.get('/pageIndex/:pageIndex/pageSize/:pageSize', [
     Middleware.validateJsonWebToken,
     Middleware.validatePageIndexAndPageSize,
     UserController.getAll
 ])
 
-router.get('/users/:id', [
+router.get('/:id', [
     Middleware.validateJsonWebToken,
-    UserController.getOne
+    UserController.get
 ])
 
-router.post('/users/check_username', [
+router.post('/check_username', [
     UserController.checkUsername
 ])
 
-router.post('/users/check_email', [
+router.post('/check_email', [
     UserController.checkEmail
 ])
 

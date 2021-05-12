@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserController } from '../../../components/User/user.controller';
+import { UserController } from '../../components/User/user.controller';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 const create = (request: Request, response: Response) => {
@@ -17,8 +17,8 @@ const create = (request: Request, response: Response) => {
     });
 };
 
-const getOne = (request: Request, response: Response) => {
-    UserController.getOneUser(request.params.id).subscribe({
+const get = (request: Request, response: Response) => {
+    UserController.get(request.params.id).subscribe({
         next: (user: any) => {
             response.json(user);
         },
@@ -29,7 +29,7 @@ const getOne = (request: Request, response: Response) => {
 };
 
 const getAll = (request: Request, response: Response) => {
-    UserController.getAllUsers(+request.params.pageIndex, +request.params.pageSize).subscribe({
+    UserController.getAll(+request.params.pageIndex, +request.params.pageSize).subscribe({
         next: (users: any) => {
             response.json(users);
         },
@@ -63,4 +63,4 @@ const checkUsername = (request: Request, response: Response) => {
     })
 }
 
-export { create, getAll, getOne, checkEmail, checkUsername };
+export { create, getAll, get, checkEmail, checkUsername };

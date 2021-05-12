@@ -22,11 +22,11 @@ class MiddlewareClass implements IMiddleware {
                 var hash = crypto.createHmac('sha512', salt).update(request.body.password).digest('base64');
                 if (hash === passwordFields[1]) {
                     request.body = {
-                        uid: wantedUser._id,
-                        name: wantedUser.username,
+                        id: wantedUser.id,
+                        displayName:  wantedUser.displayName,
+                        username: wantedUser.username,
                         email: wantedUser.email,
-                        nickname: wantedUser.nickname,
-                        avatar: wantedUser.avatar,
+                        picture: wantedUser.picture,
                         description: wantedUser.description
                     };
                     return next();

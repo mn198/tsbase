@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { IAuthController } from './auth';
+import { IAuthController } from './authentication';
 import crypto from 'crypto';
 import config from '../../config/config';
 import jwt from 'jsonwebtoken';

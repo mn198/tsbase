@@ -14,7 +14,7 @@ const namespace = "MONGOOSE_SEARCH_PARSER"
 //         value: "6054afc332d31b2ab4820972",
 //     }],
 //     sort: {
-//         orderByField: 'createdAt',
+//         orderBy: 'createdAt',
 //         direction: 'des'
 //     }
 // }
@@ -27,7 +27,7 @@ export interface ICondition {
 }
 
 export interface IOrder {
-    orderByField: string;
+    orderBy: string;
     direction: 'des' | 'asc';
 }
 
@@ -69,7 +69,7 @@ class MongoParserClass implements IMongoParserClass{
     toSort(order_option: IOrder) {
         let sort: any = {};
         let order: number = -1;
-        if (!order_option.orderByField) {
+        if (!order_option.orderBy) {
             return sort;
         }
         if (order_option.direction === 'des') {
@@ -78,7 +78,7 @@ class MongoParserClass implements IMongoParserClass{
         if (order_option.direction === 'asc') {
             order = 1;
         }
-        sort[order_option.orderByField] = order;
+        sort[order_option.orderBy] = order;
         return sort;
     }
 

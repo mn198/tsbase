@@ -29,7 +29,10 @@ const get = (request: Request, response: Response) => {
 };
 
 const getAll = (request: Request, response: Response) => {
-    UserController.getAll(+request.params.pageIndex, +request.params.pageSize).subscribe({
+    var pageIndex: any  = request.query.pageIndex;
+    var pageSize: any  = request.query.pageSize;
+
+    UserController.getAll(+pageIndex, +pageSize).subscribe({
         next: (users: any) => {
             response.json(users);
         },

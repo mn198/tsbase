@@ -9,7 +9,7 @@ router.post('', [
     UserController.create
 ])
 
-router.get('/pageIndex/:pageIndex/pageSize/:pageSize', [
+router.get('/', [
     Middleware.validateJsonWebToken,
     Middleware.validatePageIndexAndPageSize,
     UserController.getAll

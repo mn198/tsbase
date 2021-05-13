@@ -1,5 +1,5 @@
 import express from 'express';
-import { AuthController } from '../../components/Auth/auth.controller';
+import { AuthController } from '../../components/Authentication/authentication.controller';
 import { Middleware } from '../../middlewares/middleware';
 import passport from 'passport';
 

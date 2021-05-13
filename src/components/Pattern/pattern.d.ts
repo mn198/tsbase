@@ -5,8 +5,8 @@ export interface IPatternController {
     create(patternData: IPattern): Observable<IPattern>;
     get(patternId: string): Observable<IPattern>;
     update(patternId: string, patternData): Observable<IPattern>;
-    delete(peatternId: string): Observable<any>;
-    getAll(pageIndex: number, pageSize: number): Observable<IPagingPattern>;
+    remove(peatternId: string): Observable<any>;
+    getAll(search: string, pageIndex: number, pageSize: number): Observable<IPagingPattern>;
 }
 
 interface IPagingPattern {

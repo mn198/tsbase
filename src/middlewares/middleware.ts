@@ -101,12 +101,19 @@ class MiddlewareClass implements IMiddleware {
     }
 
     validatePageIndexAndPageSize(request: Request, response: Response, next: NextFunction) {
-        var pageIndex = Utils.mustBePositiveInteger(request.params.pageIndex, 1);
-        var pageSize = Utils.mustBePositiveInteger(request.params.pageSize, 30);
-        request.params.pageIndex = pageIndex;
-        request.params.pageSize = pageSize;
+        var pageIndex = Utils.mustBePositiveInteger(request.query.pageIndex, 1);
+        var pageSize = Utils.mustBePositiveInteger(request.query.pageSize, 30);
+        request.query.pageIndex = pageIndex;
+        request.query.pageSize = pageSize;
         next();
     }
+
+    hasRole(role: string){
+        return function(request: Request, response: Response, next: NextFunction){
+            
+        }
+    }
+
 }
 
 export const Middleware = new MiddlewareClass();

@@ -19,6 +19,15 @@ router.get('/patterns', [
     PatternController.getAll
 ])
 
+// Get paging patterns by owner
+router.get('/:userId/patterns', [
+    Middleware.validateJsonWebToken,
+    Middleware.validateUserId,
+    Middleware.grantAccess('readOwn', 'pattern'),
+    Middleware.validatePageIndexAndPageSize,
+    PatternController.getAllByOwner
+])
+
 // Get any pattern
 router.get('/patterns/:id', [
     Middleware.validateJsonWebToken,
@@ -29,6 +38,7 @@ router.get('/patterns/:id', [
 // Get your own pattern
 router.get('/:userId/patterns/:id', [
     Middleware.validateJsonWebToken,
+    Middleware.validateUserId,
     Middleware.grantAccess('readOwn', 'pattern'),
     Middleware.validateOwnership(PatternModel),
     PatternController.get
@@ -44,6 +54,7 @@ router.put('/patterns/:id', [
 // Update your own pattern
 router.put('/:userId/patterns/:id', [
     Middleware.validateJsonWebToken,
+    Middleware.validateUserId,
     Middleware.grantAccess('updateOwn', 'pattern'),
     Middleware.validateOwnership(PatternModel),
     PatternController.update
@@ -52,6 +63,7 @@ router.put('/:userId/patterns/:id', [
 // Remove your own pattern
 router.delete('/:userId/patterns/:id', [
     Middleware.validateJsonWebToken,
+    Middleware.validateUserId,
     Middleware.grantAccess('deleteOwn', 'pattern'),
     Middleware.validateOwnership(PatternModel),
     PatternController.remove

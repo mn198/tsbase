@@ -6,5 +6,6 @@ export interface IMiddleware {
     validateUserPayload(request: Request, response: Response, next: NextFunction);
     validatePageIndexAndPageSize(request: Request, response: Response, next: NextFunction);
     grantAccess(action: any, resource: any);
-    validateOwnership(model);
+    validateOwnership(model: any);
+    validateUserId(request: Request, response: Response, next: NextFunction);
 }

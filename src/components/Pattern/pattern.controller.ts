@@ -30,7 +30,7 @@ class Pattern implements IPatternController {
 
     update(patternId: string, patternData: IPattern): Observable<IPattern> {
         return new Observable((observer: Observer<any>) => {
-            PatternModel.update({ id: patternId }, { set: patternData })
+            PatternModel.updateOne({ _id: patternId }, { set: patternData })
                 .then((updatedPattern: IPattern | null) => {
                     observer.next(updatedPattern);
                 })
@@ -42,7 +42,7 @@ class Pattern implements IPatternController {
 
     remove(patternId: string): Observable<IPattern> {
         return new Observable((observer: Observer<any>) => {
-            PatternModel.remove({id: patternId})
+            PatternModel.remove({_id: patternId})
             .then((removedPattern: IPattern | null) => {
                 observer.next(removedPattern);
             })
@@ -58,6 +58,72 @@ class Pattern implements IPatternController {
                 {
                     $match: {
                         name: { $regex: search, $options: 'i'}
+                    }
+                },
+                {
+                    $sort: {
+                        createdAt: -1
+                    }
+                },
+                {
+                    $addFields: {
+                        id: "$_id"
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0
+                    }
+                },
+                {
+                    $facet: {
+                        data: [{ $skip: (pageIndex - 1) * pageSize }, { $limit: pageSize }],
+                        count: [{ $count: 'totalRecord' }]
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$count'
+                    }
+                },
+                {
+                    $project: {
+                        data: 1,
+                        total: '$count.totalRecord'
+                    }
+                }
+            ]).then((patterns: any) => {
+                if (patterns && patterns.length) {
+                    patterns[0].pageIndex = pageIndex;
+                    patterns[0].pageSize = pageSize;
+                    patterns[0].sort = {
+                        orderBy: 'createdAt',
+                        direction: 'des'
+                    }
+                    observer.next(patterns[0]);
+                } else {
+                    var payload = {
+                        data: [],
+                        pageIndex: pageIndex,
+                        pageSize: pageSize,
+                        sort: {
+                            orderBy: 'createdAt',
+                            direction: 'des'
+                        },
+                        total: 0
+                    };
+                    observer.next(payload);
+                }
+            });
+        });
+    }
+    getAllByOwner(search: string, pageIndex: number, pageSize: number, owner: string): Observable<IPagingPattern> {
+        return new Observable((observer: Observer<any>) => {
+            PatternModel.aggregate([
+                {
+                    $match: {
+                        name: { $regex: search, $options: 'i'},
+                        owner: owner
                     }
                 },
                 {

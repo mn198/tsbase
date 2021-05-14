@@ -69,4 +69,20 @@ const getAll = (request: Request, response: Response) => {
     });
 };
 
-export { create, getAll, get, update, remove };
+const getAllByOwner = (request: Request | any, response: Response) => {
+    var pageIndex: any  = request.query.pageIndex;
+    var pageSize: any  = request.query.pageSize;
+    var search: any  = request.query.search;
+    var owner: any = request.jwt.id;
+
+    PatternController.getAllByOwner(search, +pageIndex, +pageSize, owner).subscribe({
+        next: (patterns: any) => {
+            response.json(patterns);
+        },
+        error: (err: any) => {
+            response.status(StatusCodes.BAD_REQUEST).json({ error: err, code: StatusCodes.BAD_REQUEST });
+        }
+    });
+};
+
+export { create, getAll, get, update, remove, getAllByOwner };

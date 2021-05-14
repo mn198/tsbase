@@ -152,6 +152,17 @@ class MiddlewareClass implements IMiddleware {
             })
         }
     }
+
+    validateUserId(request: Request | any, response: Response, next: NextFunction) {
+        if(request.params.userId === request.jwt.id){
+            next();
+        } else {
+            return response.status(401).json({
+                code: StatusCodes.UNAUTHORIZED,
+                error: "Parameter userId is not valid"
+            });
+        }
+    }
 }
 
 export const Middleware = new MiddlewareClass();

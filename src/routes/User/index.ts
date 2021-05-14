@@ -4,27 +4,41 @@ import * as UserController from './user';
 
 const router = express.Router();
 
-router.post('', [
+// create new user
+router.post('/users', [
     Middleware.validateUserPayload,
     UserController.create
 ])
 
-router.get('/', [
+// Get paging users
+router.get('/users/', [
     Middleware.validateJsonWebToken,
+    Middleware.grantAccess('readAny', 'user'),
     Middleware.validatePageIndexAndPageSize,
     UserController.getAll
 ])
 
-router.get('/:id', [
+// Get current logged in user
+router.get('/users/me', [
     Middleware.validateJsonWebToken,
+    Middleware.grantAccess('readOwn', 'user'),
+    UserController.getCurrentUser
+])
+
+// Get any user
+router.get('/users/:id', [
+    Middleware.validateJsonWebToken,
+    Middleware.grantAccess('readAny', 'user'),
     UserController.get
 ])
 
-router.post('/check_username', [
+// Check if username exists
+router.post('/users/check_username', [
     UserController.checkUsername
 ])
 
-router.post('/check_email', [
+// Check if email exists
+router.post('/users/check_email', [
     UserController.checkEmail
 ])
 

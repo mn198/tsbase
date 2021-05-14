@@ -11,11 +11,6 @@
     },
     "host": "localhost:1337",
     "basePath": "/api/v1",
-    "tags": [
-        {
-            "name": "Photos"
-        }
-    ],
     "schemes": ["http"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
@@ -27,7 +22,27 @@
         }
     },
     "paths": {
-        "/admin/photos": {
+        "/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Auth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/photos": {
             "post": {
                 "tags": ["Photos"],
                 "parameters": [
@@ -47,7 +62,7 @@
                 }
             }
         },
-        "/admin/photos/{id}": {
+        "/photos/{id}": {
             "get": {
                 "tags": ["Photos"],
                 "parameters": [
@@ -65,7 +80,40 @@
                     }
                 }
             }
+        },
+        "/users/{id}": {
+            "get": {
+                "security": {
+                    "bearerAuth": []
+                },
+                "tags": ["Users"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
         }
     },
-    "definitions": {}
+    "definitions": {
+        "Auth": {
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }

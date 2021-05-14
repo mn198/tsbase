@@ -12,7 +12,8 @@ export interface IUser extends Document {
     picture: string;
     description: string;
     googleId: string;
-    photos: { value: string }[];
+    photos: { value: string }[],
+    role: string,
 }
 
 const User = new Schema(
@@ -29,11 +30,17 @@ const User = new Schema(
         description: { type: String, default: '' },
         googleId: String,
         facebookId: String,
+        twitterId: String,
         photos: [
             {
                 value: { type: String }
             }
-        ]
+        ],
+        role: {
+            type: String,
+            enum: ['admin', 'pro', 'basic'],
+            default: 'basic'
+        }
     },
     { timestamps: true, versionKey: false }
 );

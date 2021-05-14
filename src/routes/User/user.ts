@@ -28,6 +28,17 @@ const get = (request: Request, response: Response) => {
     });
 };
 
+const getCurrentUser = (request: Request | any, response: Response) => {
+    UserController.get(request.jwt.id).subscribe({
+        next: (user: any) => {
+            response.json(user);
+        },
+        error: (error: any) => {
+            response.status(StatusCodes.BAD_REQUEST).json({ error, code: StatusCodes.BAD_REQUEST });
+        }
+    });
+};
+
 const getAll = (request: Request, response: Response) => {
     var pageIndex: any  = request.query.pageIndex;
     var pageSize: any  = request.query.pageSize;
@@ -66,4 +77,4 @@ const checkUsername = (request: Request, response: Response) => {
     })
 }
 
-export { create, getAll, get, checkEmail, checkUsername };
+export { create, getAll, get, checkEmail, checkUsername, getCurrentUser };

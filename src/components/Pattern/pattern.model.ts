@@ -1,12 +1,17 @@
 import { model, Schema, Model, Document } from 'mongoose';
 
 export interface IPattern extends Document {
-    name: string
+    name: string,
+    owner: string
 }
 
 const Pattern = new Schema(
     {
-        name: String
+        name: String,
+        owner: {
+            type: String,
+            ref: "Users"
+        }
     },
     { timestamps: true, versionKey: false }
 );

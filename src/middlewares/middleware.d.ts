@@ -5,5 +5,6 @@ export interface IMiddleware {
     validateJsonWebToken(request: Request, response: Response, next: NextFunction);
     validateUserPayload(request: Request, response: Response, next: NextFunction);
     validatePageIndexAndPageSize(request: Request, response: Response, next: NextFunction);
-    hasRole(role: string);
+    grantAccess(action: any, resource: any);
+    validateOwnership(model);
 }

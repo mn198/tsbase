@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.use(PhotoRoute);
 router.use('/auth', AuthRoute);
-router.use('/users', UserRoute);
-router.use('/patterns', PatternRoute);
+router.use(UserRoute);
+router.use(PatternRoute);
 
 export { router as RoutesConfig };

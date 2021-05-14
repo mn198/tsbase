@@ -45,6 +45,7 @@ class Auth implements IAuthController {
                     picture: request.user.picture,
                     description: request.user.description,
                     email: request.user.email,
+                    role: request.user.role,
                     iat,
                     exp
                 },

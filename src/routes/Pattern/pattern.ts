@@ -5,7 +5,8 @@ import logging from '../../config/logging';
 
 const namespace = "Pattern route handler";
 
-const create = (request: Request, response: Response) => {
+const create = (request: Request | any, response: Response) => {
+    request.body.owner = request.jwt.id;
     PatternController.create(request.body).subscribe({
         next: (pattern: any) => {
             response.json(pattern);

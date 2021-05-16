@@ -4,7 +4,7 @@ dotenv.config();
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT = process.env.SERVER_PORT || '1337';
-const MONGOOSE_URI = "mongodb://localhost:27017/minishop";
+const MONGOOSE_URI = "mongodb://localhost:27017/tsbase";
 const API_VERSION = "/api/v1";
 
 const SERVER = {

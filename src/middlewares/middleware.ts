@@ -30,7 +30,7 @@ class MiddlewareClass implements IMiddleware {
                         email: wantedUser.email,
                         picture: wantedUser.picture,
                         description: wantedUser.description,
-                        role: wantedUser.role,
+                        role: wantedUser.role
                     };
                     return next();
                 } else {
@@ -40,7 +40,7 @@ class MiddlewareClass implements IMiddleware {
         });
     }
 
-    validateJsonWebToken(request: Request | any , response: Response, next: NextFunction) {
+    validateJsonWebToken(request: Request | any, response: Response, next: NextFunction) {
         if (request.headers['authorization']) {
             try {
                 let authorization = request.headers['authorization'].split(' ');
@@ -59,7 +59,16 @@ class MiddlewareClass implements IMiddleware {
     }
 
     validateUserPayload(request: Request, response: Response, next: NextFunction) {
-        var user: IUser = request.body;
+        var user = request.body;
+        if(!user.email){
+            user.email = '';
+        }
+        if(!user.username){
+            user.username = '';
+        }
+        if(!user.password){
+            user.password = '';
+        }
         var valid = 1;
         var errors: any = [];
 
@@ -97,6 +106,9 @@ class MiddlewareClass implements IMiddleware {
                 } else {
                     response.status(StatusCodes.BAD_REQUEST).json({ errors, code: StatusCodes.BAD_REQUEST });
                 }
+            },
+            error: (error: any) => {
+                response.status(StatusCodes.BAD_REQUEST).json({ code: StatusCodes.BAD_REQUEST });
             }
         });
     }
@@ -132,34 +144,35 @@ class MiddlewareClass implements IMiddleware {
     }
 
     validateOwnership(model: any) {
-        return function(request: Request | any, response: Response, next: NextFunction){
-            model.findOne({_id: request.params.id, owner: request.jwt.id})
-            .then((wanted: any) => {
-                if(wanted){
-                    next();
-                } else {
+        return function (request: Request | any, response: Response, next: NextFunction) {
+            model
+                .findOne({ _id: request.params.id, owner: request.jwt.id })
+                .then((wanted: any) => {
+                    if (wanted) {
+                        next();
+                    } else {
+                        return response.status(401).json({
+                            code: StatusCodes.UNAUTHORIZED,
+                            error: "You don't have enough permission to perform this action"
+                        });
+                    }
+                })
+                .catch((err: any) => {
                     return response.status(401).json({
                         code: StatusCodes.UNAUTHORIZED,
                         error: "You don't have enough permission to perform this action"
                     });
-                }
-            })
-            .catch((err: any) => {
-                return response.status(401).json({
-                    code: StatusCodes.UNAUTHORIZED,
-                    error: "You don't have enough permission to perform this action"
                 });
-            })
-        }
+        };
     }
 
     validateUserId(request: Request | any, response: Response, next: NextFunction) {
-        if(request.params.userId === request.jwt.id){
+        if (request.params.userId === request.jwt.id) {
             next();
         } else {
             return response.status(401).json({
                 code: StatusCodes.UNAUTHORIZED,
-                error: "Parameter userId is not valid"
+                error: 'Parameter userId is not valid'
             });
         }
     }

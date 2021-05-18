@@ -1,5 +1,6 @@
 import { IUtils } from './utils.d';
 import multer from 'multer';
+import xlsx from 'xlsx';
 
 class UtilsClass implements IUtils {
     toAscii(word: string) {
@@ -84,7 +85,7 @@ class UtilsClass implements IUtils {
         filename: function (request: any, file: any, cb: any) {
             cb(null, new Date().getTime() + '_' + file.originalname);
         }
-    })
+    });
 
     fileFilter = (request: any, file: any, cb: any) => {
         // reject a file
@@ -93,7 +94,7 @@ class UtilsClass implements IUtils {
         } else {
             cb(null, false);
         }
-    }
+    };
 
     uploadImage = multer({
         storage: this.storage,
@@ -101,7 +102,36 @@ class UtilsClass implements IUtils {
         //     fileSize: 1024 * 1024 * 5
         // },
         fileFilter: this.fileFilter
-    })
+    });
+
+    bufferStorage() {
+        const storage = multer.memoryStorage();
+        return multer({ storage: storage });
+    }
+
+    xlsxBufferToJson(buffer: any) {
+        let workbook = xlsx.read(buffer);
+        let sheet_1 = workbook.SheetNames[0];
+        let sheet = workbook.Sheets[sheet_1];
+        let data = xlsx.utils.sheet_to_json(sheet);
+        return data;
+    }
+
+    xlsxFileToJson(location: any) {
+        let workbook = xlsx.readFile(location);
+        let sheet_1 = workbook.SheetNames[0];
+        let sheet = workbook.Sheets[sheet_1];
+        let data = xlsx.utils.sheet_to_json(sheet);
+        return data;
+    }
+
+    xlsxJsonToCSVBuffer(jsonData: any) {
+        let ws = xlsx.utils.json_to_sheet(jsonData);
+        let wb = xlsx.utils.book_new();
+        xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
+        let buffer = xlsx.write(wb, { bookType: 'csv', type: 'buffer' });
+        return buffer;
+    }
 }
 
 export const Utils = new UtilsClass();

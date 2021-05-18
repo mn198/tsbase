@@ -5,5 +5,9 @@ export interface IUtils {
     elapsedTime(start: number): string;
     startOfDay(date: any): string;
     endOfDay(date: any): string;
-    uploadImage
+    uploadImage;
+    bufferStorage();
+    xlsxBufferToJson(buffer: any): any;
+    xlsxFileToJson(location: any): any;
+    xlsxJsonToCSVBuffer(jsonData: any): any;
 }

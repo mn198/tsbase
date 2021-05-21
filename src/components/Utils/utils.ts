@@ -1,6 +1,7 @@
 import { IUtils } from './utils.d';
 import multer from 'multer';
 import xlsx from 'xlsx';
+import fs from 'fs';
 
 class UtilsClass implements IUtils {
     toAscii(word: string) {
@@ -80,6 +81,9 @@ class UtilsClass implements IUtils {
 
     storage = multer.diskStorage({
         destination: function (request: any, file: any, cb: any) {
+            if(!fs.existsSync('./uploads')){
+                fs.mkdirSync('./uploads');
+            }
             cb(null, './uploads');
         },
         filename: function (request: any, file: any, cb: any) {
@@ -103,6 +107,10 @@ class UtilsClass implements IUtils {
         // },
         fileFilter: this.fileFilter
     });
+
+    uploadAnyFile = multer({
+        storage: this.storage
+    })
 
     bufferStorage() {
         const storage = multer.memoryStorage();

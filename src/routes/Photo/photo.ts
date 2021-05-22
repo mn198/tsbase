@@ -1,10 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import { PhotoController } from '../../components/Photo/photo.controller';
 import fs from 'fs';
+import { IFile } from '../../components/Subdocument/FileSchema';
+import { IOwner } from '../../components/Subdocument/OwnerSchema';
 
 const uploadPhoto = (request: Request, response: Response) => {
-    var stat: any = request.file; 
-    PhotoController.uploadPhoto(stat)
+    var stat: IFile = request.file; 
+    var owner: IOwner = {
+        userId: request.jwt.id,
+        username: request.jwt.username,
+        displayName: request.jwt.displayName,
+        role: request.jwt.role,
+    }
+    PhotoController.uploadPhoto(stat, owner)
     .subscribe({
         next: (imageStat: any) => {
             response.json(imageStat);
@@ -14,7 +22,6 @@ const uploadPhoto = (request: Request, response: Response) => {
         }
     })
 }
-
 
 const readPhoto = (request: Request, response: Response) => {
     try {
@@ -28,8 +35,6 @@ const readPhoto = (request: Request, response: Response) => {
     }
 
 }
-
-
 
 export {
     uploadPhoto,

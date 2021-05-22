@@ -5,7 +5,7 @@ import logging from '../../config/logging';
 
 const namespace = "Pattern route handler";
 
-const create = (request: Request | any, response: Response) => {
+const create = (request: Request, response: Response) => {
     request.body.owner = request.jwt.id;
     PatternController.create(request.body).subscribe({
         next: (pattern: any) => {
@@ -69,7 +69,7 @@ const getAll = (request: Request, response: Response) => {
     });
 };
 
-const getAllByOwner = (request: Request | any, response: Response) => {
+const getAllByOwner = (request: Request, response: Response) => {
     var pageIndex: any  = request.query.pageIndex;
     var pageSize: any  = request.query.pageSize;
     var search: any  = request.query.search;

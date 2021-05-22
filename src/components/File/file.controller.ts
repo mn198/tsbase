@@ -1,15 +1,21 @@
 import { Observable } from "rxjs";
 import logging from "../../config/logging";
-import { IFileStat, FileModel } from "./file.model";
-import { IFileController } from './file.d';
+import { FileModel } from "./file.model";
+import { IFileController, IFileStat } from './file.d';
+import { IOwner } from "../Subdocument/OwnerSchema";
+import { IFile } from "../Subdocument/FileSchema";
 
 const namespace = "File Controller";
 
 class File implements IFileController {
-    uploadFile(fileStat: IFileStat): Observable<IFileStat>{
+    uploadFile(fileStat: IFile, owner: IOwner): Observable<IFileStat>{
         return new Observable((observer: any) => {
             if(fileStat){
-                FileModel.create(fileStat)
+                var newFile: IFileStat =  {
+                    ...fileStat,
+                    owner: owner
+                }
+                FileModel.create(newFile)
                 .then((stat: any) => {
                     observer.next(stat);
                 })

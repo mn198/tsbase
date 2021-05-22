@@ -1,10 +1,18 @@
+import fs from 'fs';
 import { Request, Response, NextFunction } from 'express';
 import { FileController } from '../../components/File/file.controller';
-import fs from 'fs';
+import { IOwner } from '../../components/Subdocument/OwnerSchema';
+import { IFile } from '../../components/Subdocument/FileSchema';
 
 const uploadFile = (request: Request, response: Response) => {
-    var stat: any = request.file; 
-    FileController.uploadFile(stat)
+    var stat: IFile = request.file; 
+    var owner: IOwner = {
+        userId: request.jwt.id,
+        username: request.jwt.username,
+        displayName: request.jwt.displayName,
+        role: request.jwt.role,
+    }
+    FileController.uploadFile(stat, owner)
     .subscribe({
         next: (imageStat: any) => {
             response.json(imageStat);

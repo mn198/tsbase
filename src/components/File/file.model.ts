@@ -1,6 +1,7 @@
 import { model, Schema, Model, Document } from 'mongoose';
+import { OwnerSchema } from '../Subdocument/OwnerSchema';
 
-export interface IFileStat extends Document {
+interface IFileStat extends Document {
     filename: string,
     originalname: string,
     encoding: string,
@@ -8,8 +9,15 @@ export interface IFileStat extends Document {
     destination: string,
     fieldname: string,
     path: string,
-    size: number
+    size: number,
+    owner: {
+        userId: string,
+        username: string,
+        role: string,
+        displayName: string
+    }
 }
+
 const File = new Schema({
     filename: String,
     originalname: String,
@@ -18,7 +26,8 @@ const File = new Schema({
     destination: String,
     fieldname: String,
     path: String,
-    size: Number
+    size: Number,
+    owner: OwnerSchema
 }, { timestamps: true, versionKey: false })
 
 export const FileModel: Model<IFileStat> = model('Files', File); 

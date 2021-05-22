@@ -1,15 +1,21 @@
 import { Observable } from "rxjs";
 import logging from "../../config/logging";
-import { IImageStat, PhotoModel } from "./photo.model";
-import { IPhotoController } from './photo.d';
+import { PhotoModel } from "./photo.model";
+import { IPhotoController, IImageStat } from './photo.d';
+import { IFile } from "../Subdocument/FileSchema";
+import { IOwner } from "../Subdocument/OwnerSchema";
 
 const namespace = "Photo Controller";
 
 class Photo implements IPhotoController {
-    uploadPhoto(imageStat: IImageStat): Observable<IImageStat>{
+    uploadPhoto(fileStat: IFile, owner: IOwner): Observable<IImageStat>{
         return new Observable((observer: any) => {
-            if(imageStat){
-                PhotoModel.create(imageStat)
+            if(fileStat){
+                var newImage: IImageStat = {
+                    ...fileStat,
+                    owner
+                }
+                PhotoModel.create(newImage)
                 .then((stat: any) => {
                     observer.next(stat);
                 })

@@ -1,4 +1,5 @@
 import { model, Schema, Model, Document } from 'mongoose';
+import { OwnerSchema } from '../Subdocument/OwnerSchema';
 
 export interface IImageStat extends Document {
     filename: string,
@@ -8,8 +9,15 @@ export interface IImageStat extends Document {
     destination: string,
     fieldname: string,
     path: string,
-    size: number
+    size: number,
+    owner: {
+        userId: string,
+        username: string,
+        role: string,
+        displayName: string
+    }
 }
+
 const Photo = new Schema({
     filename: String,
     originalname: String,
@@ -18,7 +26,8 @@ const Photo = new Schema({
     destination: String,
     fieldname: String,
     path: String,
-    size: Number
+    size: Number,
+    owner: OwnerSchema
 }, { timestamps: true, versionKey: false })
 
 export const PhotoModel: Model<IImageStat> = model('Photos', Photo); 

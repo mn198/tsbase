@@ -28,7 +28,7 @@ const get = (request: Request, response: Response) => {
     });
 };
 
-const getCurrentUser = (request: Request | any, response: Response) => {
+const getCurrentUser = (request: Request, response: Response) => {
     UserController.get(request.jwt.id).subscribe({
         next: (user: any) => {
             response.json(user);

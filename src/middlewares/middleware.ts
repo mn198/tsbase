@@ -144,7 +144,7 @@ class MiddlewareClass implements IMiddleware {
     }
 
     validateOwnership(model: any) {
-        return function (request: Request | any, response: Response, next: NextFunction) {
+        return function (request: Request, response: Response, next: NextFunction) {
             model
                 .findOne({ _id: request.params.id, owner: request.jwt.id })
                 .then((wanted: any) => {
@@ -166,7 +166,7 @@ class MiddlewareClass implements IMiddleware {
         };
     }
 
-    validateUserId(request: Request | any, response: Response, next: NextFunction) {
+    validateUserId(request: Request, response: Response, next: NextFunction) {
         if (request.params.userId === request.jwt.id) {
             next();
         } else {

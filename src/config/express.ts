@@ -7,6 +7,24 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 require('./passport');
 
+declare global {
+    namespace Express {
+        interface Request {
+            jwt: {
+                id: string;
+                username: string;
+                displayName: string;
+                picture: string;
+                description: string;
+                email: string;
+                role: string;
+                iat: string;
+                exp: string
+            };
+        }
+    }
+}
+
 const app = express();
 
 /** authenticate */

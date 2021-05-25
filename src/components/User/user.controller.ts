@@ -34,6 +34,17 @@ class User implements IUserController {
                             },
                             {
                                 $limit: pageSize
+                            },
+                            {
+                                $addFields: {
+                                    id: "$_id"
+                                }
+                            },
+                            {
+                                $project: {
+                                    _id: 0,
+                                    password: 0
+                                }
                             }
                         ],
                         count: [

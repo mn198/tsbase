@@ -42,13 +42,13 @@ class Pattern implements IPatternController {
 
     remove(patternId: string): Observable<IPattern> {
         return new Observable((observer: Observer<any>) => {
-            PatternModel.remove({_id: patternId})
-            .then((removedPattern: IPattern | null) => {
-                observer.next(removedPattern);
-            })
-            .catch((error: any) => {
-                observer.error(error);
-            });
+            PatternModel.remove({ _id: patternId })
+                .then((removedPattern: IPattern | null) => {
+                    observer.next(removedPattern);
+                })
+                .catch((error: any) => {
+                    observer.error(error);
+                });
         });
     }
 
@@ -57,7 +57,7 @@ class Pattern implements IPatternController {
             PatternModel.aggregate([
                 {
                     $match: {
-                        name: { $regex: search, $options: 'i'}
+                        name: { $regex: search, $options: 'i' }
                     }
                 },
                 {
@@ -66,18 +66,20 @@ class Pattern implements IPatternController {
                     }
                 },
                 {
-                    $addFields: {
-                        id: "$_id"
-                    }
-                },
-                {
-                    $project: {
-                        _id: 0
-                    }
-                },
-                {
                     $facet: {
-                        data: [{ $skip: (pageIndex - 1) * pageSize }, { $limit: pageSize }],
+                        data: [
+                            { $skip: (pageIndex - 1) * pageSize },
+                            { $limit: pageSize },
+                            {
+                                $addFields: {
+                                    id: '$_id'
+                                }
+                            }, {
+                                $project: {
+                                    _id: 0
+                                }
+                            }
+                        ],
                         count: [{ $count: 'totalRecord' }]
                     }
                 },
@@ -99,7 +101,7 @@ class Pattern implements IPatternController {
                     patterns[0].sort = {
                         orderBy: 'createdAt',
                         direction: 'des'
-                    }
+                    };
                     observer.next(patterns[0]);
                 } else {
                     var payload = {
@@ -122,7 +124,7 @@ class Pattern implements IPatternController {
             PatternModel.aggregate([
                 {
                     $match: {
-                        name: { $regex: search, $options: 'i'},
+                        name: { $regex: search, $options: 'i' },
                         owner: owner
                     }
                 },
@@ -133,7 +135,7 @@ class Pattern implements IPatternController {
                 },
                 {
                     $addFields: {
-                        id: "$_id"
+                        id: '$_id'
                     }
                 },
                 {
@@ -165,7 +167,7 @@ class Pattern implements IPatternController {
                     patterns[0].sort = {
                         orderBy: 'createdAt',
                         direction: 'des'
-                    }
+                    };
                     observer.next(patterns[0]);
                 } else {
                     var payload = {
